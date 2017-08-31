@@ -12,12 +12,29 @@
 	<script type="text/javascript" src="./controllers.js"></script>
 	
 	
-	<div ng-controller="httpTesting">
-	 	<h1>Testing Get and Post HTTP requestsss</h1>
-	 	Something to send: <input type="text" ng-model="data">
-	 	<button ng-click="sendPost()">Send Post</button>
-	 	<button ng-click="sendGet()">Send Get</button><p>
-	 	Sent/received: {{data2}}
+	<div ng-controller="MyController">
+	 	<h1>Simple App</h1>
+	 	<h2>Fille in Information</h2>
+	 	
+	 	Full Name:<input type="text" ng-model="fullName"><p>
+	 	Email: <input type="text" ng-model="email"><p>
+	 	Age: <input type="text" ng-model="age"><p>
+
+	 	<button ng-click="addUser()">Add User</button>
+	 	<button ng-click="deleteUser()">Delete User</button>
+	 	<button ng-click="getAllUsers()">GetAllUsers</button><p>
+	 	
+	 	<!-- Listing all current entries in database -->
+
+
+	 	<ul ng-repeat="u in users">
+	 		<li>EMAIL: {{u.email}}</li>
+	 		<li>FULL-NAME:{{u.full_name}}</li>
+	 		<li>Age: {{u.age}}</li>
+	 	</ul>
+	 	<p>
+	 	<p>
+	 	DEBUGGING/RESPONSE: {{serverResponse}}
 	</div>
 
 </body>

@@ -25,80 +25,150 @@ app.config(function($routeProvider,$locationProvider, $httpProvider){
 
 });
 
-app.controller('httpTesting', function($scope, $http){
-	$scope.data2 = [];
+
+
+app.controller('MyController', function($scope, $http){
+	$scope.serverResponse = [];
+	$scope.users = [];
 	//$http.defaults.headers.post["Content-Type"] = "application/json";
 
-	$scope.sendPost = function(){
+
+	$scope.addUser = function (){
+
+		$http.post('/simple/add', {email: $scope.email, fullName: $scope.fullName, age: $scope.age})
+			.then(function(response){
+				$scope.serverResponse = response.data
+				console.log('Added User! : ')
+
+			}, function(response){
+				
+				console.log('MyController.addUser(): Error Occured' + response)
+
+			});
 		
 
-		var config = 
+	};
+
+	$scope.deleteUser = function (){
+
+		if($scope.email != '')
 		{
-			withCredentials: true,
-			headers:{
-						'Authorization': 'Basic',
-                		'Accept': 'application/json',
-                		'Content-Type': 'application/json' 
-            		},
-            transformRequest: angular.identity
-        };
-
-		var dataObj = { 
-				msg : $scope.data,
-				state : $scope.state,
-				isFirst : false
-		};	
-
-		var data2send =  JSON.stringify(dataObj);
+			$http.post('/simple/delete',{email: $scope.email})
+			.then(function(response){
+				
+				$scope.serverResponse = response.data
 
 
-		$http.post('/api/test' ,data2send,config)
-		.then(function(response){
-			// expects a JSON response 
-			$scope.data2 = response.data
+				$http.post('/simple/getAll',{})
+				.then(function(response){
+					
+					$scope.serverResponse = response.data;
+					$scope.users = response.data;
 
-		}, function(response){
+				});
 
-			console.log('BAD!! :Error Occured' + response)
 
-		});
+			}, function(response){
+				
+				console.log('MyController.deleteUser(): Error Occured' + response)
+
+			});
+		}
+		
+
 	};
 
 
-	$scope.sendGet = function(){
-		
+	$scope.getAllUsers = function (){
 
-		var config = 
-		{
-			withCredentials: true,
-			headers:{
-						'Authorization': 'Basic',
-                		'Accept': 'application/json',
-                		'Content-Type': 'application/json' 
-            		},
-            transformRequest: angular.identity
-        };
-
-		var dataObj = { 
-				msg : $scope.data,
-				state : "$scope.state",
-				isFirst : false
-		};	
-
-		var data2send =  JSON.stringify(dataObj);
-
-
-		$http.get('/api/test')
+		$http.post('/simple/getAll',{})
 		.then(function(response){
-			// expects a JSON response 
-			$scope.data2 = response.data
+			
+			$scope.serverResponse = response.data;
+			$scope.users = response.data;
 
 		}, function(response){
 			
-			console.log('Error Occured' + response)
+			console.log('MyController.getAllUsers(): Error Occured' + response)
 
 		});
+
 	};
+
+
+	// $scope.sendPost = function(){
+		
+
+	// 	var config = 
+	// 	{
+	// 		withCredentials: true,
+	// 		headers:{
+	// 					'Authorization': 'Basic',
+ //                		'Accept': 'application/json',
+ //                		'Content-Type': 'application/json' 
+ //            		},
+ //            transformRequest: angular.identity
+ //        };
+
+	// 	var dataObj = { 
+	// 			msg : $scope.data,
+	// 			state : $scope.state,
+	// 			isFirst : false
+	// 	};	
+
+	// 	var data2send =  JSON.stringify(dataObj);
+
+
+	// 	$http.post('/api/test' ,data2send,config)
+	// 	.then(function(response){
+	// 		// expects a JSON response 
+	// 		$scope.data2 = response.data
+
+	// 	}, function(response){
+
+	// 		console.log('BAD!! :Error Occured' + response)
+
+	// 	});
+	// };
+
+
+	// $scope.sendGet = function(){
+		
+
+	// 	var config = 
+	// 	{
+	// 		withCredentials: true,
+	// 		headers:{
+	// 					'Authorization': 'Basic',
+ //                		'Accept': 'application/json',
+ //                		'Content-Type': 'application/json' 
+ //            		},
+ //            transformRequest: angular.identity
+ //        };
+
+	// 	var dataObj = { 
+	// 			msg : $scope.data,
+	// 			state : "$scope.state",
+	// 			isFirst : false
+	// 	};	
+
+	// 	var data2send =  JSON.stringify(dataObj);
+
+
+	// 	$http.get('/api/test')
+	// 	.then(function(response){
+	// 		// expects a JSON response 
+	// 		$scope.data2 = response.data
+
+	// 	}, function(response){
+			
+	// 		console.log('Error Occured' + response)
+
+	// 	});
+	// };
+
+
+
 
 
 	
